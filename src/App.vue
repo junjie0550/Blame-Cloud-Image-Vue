@@ -1,25 +1,28 @@
 <template>
   <div id="app">
-    <BasicLayout/>
+    <a-config-provider :locale="zhCN">
+      <BasicLayout />
+    </a-config-provider>
   </div>
 </template>
 
 <script setup lang="ts">
-
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import BasicLayout from '@/layout/BasicLayout.vue'
-import { healthUsingGet } from '@/api/mainController.ts'
-import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
+dayjs.locale('zh-cn');
 
-// 获取当前登录用户信息
-const loginUserStore = useLoginUserStore()
-loginUserStore.fetchLoginUser()
+// import { healthUsingGet } from '@/api/mainController.ts'
+// import {useLoginUserStore} from "@/stores/useLoginUserStore.ts";
 
-// 测试前后端接口是否正常通信
-healthUsingGet().then((res) => {
-  console.log(res)
-})
+// 已经改为在权限校验文件中获取
+// const loginUserStore = useLoginUserStore()
+// loginUserStore.fetchLoginUser()
+
+// healthUsingGet().then((res) => {
+//   console.log(res)
+// })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
