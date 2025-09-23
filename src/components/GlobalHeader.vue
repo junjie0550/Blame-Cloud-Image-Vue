@@ -34,7 +34,7 @@
                       我的空间
                     </router-link>
                   </a-menu-item>
-                  <a-menu-item @click="doLogout">
+                  <a-menu-item @click="showLogoutConfirm">
                     <LogoutOutlined />
                     退出登录
                   </a-menu-item>
@@ -53,7 +53,7 @@
 <script lang="ts" setup>
 import { computed, h, ref } from 'vue'
 import { HomeOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { type MenuProps, message } from 'ant-design-vue'
+import { type MenuProps, message, Modal } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import { userLogoutUsingPost } from '@/api/userController.ts'
@@ -140,6 +140,19 @@ const doLogout = async () => {
     message.error('退出登录失败，' + res.data.message)
   }
 }
+// 显示退出登录确认框
+const showLogoutConfirm = () => {
+  Modal.confirm({
+    title: '确认退出',
+    content: '确定要退出登录吗？',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: async () => {
+      await doLogout()
+    }
+  })
+}
+
 </script>
 
 <style scoped>

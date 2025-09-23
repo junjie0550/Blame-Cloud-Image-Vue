@@ -92,6 +92,21 @@ export async function listPictureVoByPageUsingPost(
   })
 }
 
+/** doPictureReview POST /api/picture/review */
+export async function doPictureReviewUsingPost(
+  body: API.PictureReviewRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>('/api/picture/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** listPictureTagCategory GET /api/picture/tag_category */
 export async function listPictureTagCategoryUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponsePictureTagCategory_>('/api/picture/tag_category', {
@@ -106,6 +121,62 @@ export async function updatePictureUsingPost(
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseBoolean_>('/api/picture/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** uploadPicture POST /api/picture/upload */
+export async function uploadPictureUsingPost(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.uploadPictureUsingPOSTParams,
+  body: {},
+  file?: File,
+  options?: { [key: string]: any }
+) {
+  const formData = new FormData()
+
+  if (file) {
+    formData.append('file', file)
+  }
+
+  Object.keys(body).forEach((ele) => {
+    const item = (body as any)[ele]
+
+    if (item !== undefined && item !== null) {
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach((f) => formData.append(ele, f || ''))
+        } else {
+          formData.append(ele, new Blob([JSON.stringify(item)], { type: 'application/json' }))
+        }
+      } else {
+        formData.append(ele, item)
+      }
+    }
+  })
+
+  return request<API.BaseResponsePictureVO_>('/api/picture/upload', {
+    method: 'POST',
+    params: {
+      ...params,
+    },
+    data: formData,
+    requestType: 'form',
+    ...(options || {}),
+  })
+}
+
+/** uploadPictureByUrl POST /api/picture/upload/url */
+export async function uploadPictureByUrlUsingPost(
+  body: API.PictureUploadRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponsePictureVO_>('/api/picture/upload/url', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
