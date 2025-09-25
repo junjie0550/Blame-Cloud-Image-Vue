@@ -6,6 +6,7 @@ import AddPicturePage from '../../pages/AddPicturePage.vue'
 import pictureManagePage from '../../pages/admin/PictureManagePage.vue'
 import HomePage from '../../pages/HomePage.vue'
 import PictureDetailPage from '../../pages/PictureDetailPage.vue'
+import AddPictureBatchPage from '../../pages/admin/AddPictureBatchPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,11 @@ const router = createRouter({
       path: '/add_picture',
       name: '创建图片',
       component: AddPicturePage,
+    },
+    {
+      path: '/add_picture/batch',
+      name: '批量创建图片',
+      component: AddPictureBatchPage,
     },
     {
       path: '/admin/PictureManage',
