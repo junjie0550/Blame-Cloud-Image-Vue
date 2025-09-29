@@ -53,8 +53,8 @@ import {
 } from '@ant-design/icons-vue'
 import { deletePictureUsingPost } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
-// import ShareModal from '@/components/ShareModal.vue'
 import { ref } from 'vue'
+import ShareModal from '@/components/ShareModal.vue'
 
 interface Props {
   dataList?: API.PictureVO[]

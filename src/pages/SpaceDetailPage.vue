@@ -5,7 +5,6 @@
       <h2>{{ space.spaceName }}（{{ SPACE_TYPE_MAP[space.spaceType] }}）</h2>
       <a-space size="middle">
         <a-button
-
           type="primary"
           :href="`/add_picture?spaceId=${id}`"
           target="_blank"
@@ -32,7 +31,7 @@
         >
           空间分析
         </a-button>
-        <a-button v-if="canEditPicture" :icon="h(EditOutlined)" @click="doBatchEdit"> 批量编辑</a-button>
+        <a-button :icon="h(EditOutlined)" @click="doBatchEdit"> 批量编辑</a-button>
         <a-tooltip
           :title="`占用空间 ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`"
         >
@@ -50,7 +49,7 @@
     <div style="margin-bottom: 16px" />
     <!-- 按颜色搜索，跟其他搜索条件独立 -->
     <a-form-item label="按颜色搜索">
-<!--      <color-picker format="hex" @pureColorChange="onColorChange" />-->
+      <color-picker format="hex" @pureColorChange="onColorChange" />
     </a-form-item>
     <!-- 图片列表 -->
     <PictureList
@@ -84,16 +83,16 @@ import { getSpaceVoByIdUsingGet } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
 import {
   listPictureVoByPageUsingPost,
-  // searchPictureByColorUsingPost,
+  searchPictureByColorUsingPost,
 } from '@/api/pictureController.ts'
 import { formatSize } from '@/utils'
 import PictureList from '@/components/PictureList.vue'
-// import PictureSearchForm from '@/components/PictureSearchForm.vue'
-// import { ColorPicker } from 'vue3-colorpicker'
-// import 'vue3-colorpicker/style.css'
-// import BatchEditPictureModal from '@/components/BatchEditPictureModal.vue'
+import { ColorPicker } from 'vue3-colorpicker'
+import 'vue3-colorpicker/style.css'
+import BatchEditPictureModal from '@/components/BatchEditPictureModal.vue'
 import { BarChartOutlined, EditOutlined, TeamOutlined } from '@ant-design/icons-vue'
 import { SPACE_PERMISSION_ENUM, SPACE_TYPE_MAP } from '../constants/space.ts'
+import PictureSearchForm from '@/components/PictureSearchForm.vue'
 
 interface Props {
   id: string | number
@@ -194,21 +193,21 @@ const onSearch = (newSearchParams: API.PictureQueryRequest) => {
 }
 
 // 按照颜色搜索
-// const onColorChange = async (color: string) => {
-//   loading.value = true
-//   const res = await searchPictureByColorUsingPost({
-//     picColor: color,
-//     spaceId: props.id,
-//   })
-//   if (res.data.code === 0 && res.data.data) {
-//     const data = res.data.data ?? []
-//     dataList.value = data
-//     total.value = data.length
-//   } else {
-//     message.error('获取数据失败，' + res.data.message)
-//   }
-//   loading.value = false
-// }
+const onColorChange = async (color: string) => {
+  loading.value = true
+  const res = await searchPictureByColorUsingPost({
+    picColor: color,
+    spaceId: props.id,
+  })
+  if (res.data.code === 0 && res.data.data) {
+    const data = res.data.data ?? []
+    dataList.value = data
+    total.value = data.length
+  } else {
+    message.error('获取数据失败，' + res.data.message)
+  }
+  loading.value = false
+}
 
 // ---- 批量编辑图片 -----
 const batchEditPictureModalRef = ref()
