@@ -4,9 +4,12 @@
       <a-layout-header class="header">
         <GlobalHeader/>
       </a-layout-header>
-      <a-layout-content class="content">
-        <RouterView/>
-      </a-layout-content>
+      <a-layout>
+        <GlobalSider  class="sider"/>
+        <a-layout-content class="content">
+          <RouterView/>
+        </a-layout-content>
+      </a-layout>
       <a-layout-footer class="footer">
         <a href="http://github.com/junjie0550" target="_blank">版权作者 by Blame</a>
       </a-layout-footer>
@@ -16,29 +19,40 @@
 
 <script setup lang="ts">
 import GlobalHeader from '@/components/GlobalHeader.vue'
+import GlobalSider from '@/components/GlobalSider.vue'
 </script>
 
 <style scoped>
 #basicLayout .header{
   padding-inline: 20px;
   color: unset;
-  margin-bottom: 16px;
   background: white;
 }
 
+#basicLayout .sider {
+  background: #fff;
+  border-right: 0.5px solid #eee;
+  padding-top: 20px;
+}
+
+#basicLayout :deep(.ant-menu-root) {
+  border-bottom: none !important;
+  border-inline-end: none !important;
+}
+
 #basicLayout .content {
-  padding: 20px;
+  padding: 28px;
   background: linear-gradient(to right, #fefefe, #fff);
   margin-bottom: 28px;
 }
 
 #basicLayout .footer {
   background: #efefef;
+  padding: 16px;
   position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   text-align: center;
 }
-
 </style>

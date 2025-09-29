@@ -3,7 +3,9 @@
     <h2 style="margin-bottom: 16px">
       {{ route.query?.id ? '修改图片' : '创建图片' }}
     </h2>
-
+    <a-typography-paragraph v-if="spaceId" type="secondary">
+      保存至空间：<a :href="`/space/${spaceId}`" target="_blank">{{ spaceId }}</a>
+    </a-typography-paragraph>
     <!-- 选择上传方式 -->
     <a-tabs v-model:activeKey="uploadType">
       <a-tab-pane key="file" tab="文件上传">
@@ -60,7 +62,7 @@
 
 <script setup lang="ts">
 import PictureUpload from '@/components/PictureUpload.vue'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import {
   editPictureUsingPost,
   getPictureVoByIdUsingGet,
@@ -70,9 +72,17 @@ import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
 
+const router = useRouter()
+const route = useRoute()
+
 const picture = ref<API.PictureVO>()
 const pictureForm = reactive<API.PictureEditRequest>({})
 const uploadType = ref<'file' | 'url'>('file')
+
+// 空间ID
+const spaceId = computed(() => {
+  return route.query?.spaceId
+})
 
 /**
  * 图片上传成功
@@ -82,8 +92,6 @@ const onSuccess = (newPicture: API.PictureVO) => {
   picture.value = newPicture
   pictureForm.name = newPicture.name
 }
-
-const router = useRouter()
 
 /**
  * 提交表单
@@ -97,6 +105,7 @@ const handleSubmit = async (values: any) => {
   }
   const res = await editPictureUsingPost({
     id: pictureId,
+    spaceId: spaceId.value,
     ...values,
   })
   // 操作成功
@@ -137,8 +146,6 @@ const getTagCategoryOptions = async () => {
     message.error('获取标签分类列表失败，' + res.data.message)
   }
 }
-
-const route = useRoute()
 
 // 获取老数据
 const getOldPicture = async () => {
