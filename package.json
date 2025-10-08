@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "pure": "vite build",
     "build": "run-p type-check \"build-only {@}\" --",
     "openapi": "node openapi.config.js",
     "preview": "vite preview",
